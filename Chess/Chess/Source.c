@@ -71,11 +71,90 @@ Bool King_move(char letter_move_to, char number_move_to, char number_move_from, 
 		return False;
 	}
 
-Bool Rook_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour) {
+int *diffrences_for_move(int *array_with_info_about_diffrences_for_move, char letter_move_to, char number_move_to, char number_move_from, char letter_move_from){
+	array_with_info_about_diffrences_for_move[0] = letter_move_to - letter_move_from; //sign of difference horizontally
+	array_with_info_about_diffrences_for_move[1] = number_move_to - number_move_from; //sign_of_difference_upright
+	array_with_info_about_diffrences_for_move[2] = abs(letter_move_to - letter_move_from); //difference horizontally
+	array_with_info_about_diffrences_for_move[3] = abs(number_move_to - number_move_from);  //fifference upright
+}
+
+Bool Check_is_it_empty_between_squares_Rook(int difference, int sign_of_difference, char number_move_from, char letter_move_from, Board_struct** Board) {
+	if (difference) {
+		difference--;
+		for (int i = 1; i <= difference; i++) {
+			if (sign_of_difference > 0) {
+				if (Board[number_move_from][letter_move_from + i].Piece_on_square != Empty) return False;
+			}
+			else if (sign_of_difference < 0) {
+				if (Board[number_move_from][letter_move_from - i].Piece_on_square != Empty) return False;
+			}
+		}
+	} return True;
+}
+
+Bool Check_is_it_empty_between_squares_Bishop (int difference_horizontally, int sign_of_difference_horizontally, int sign_of_difference_upright, char number_move_from, char letter_move_from, Board_struct** Board) {
+	if (difference_horizontally) {
+	difference_horizontally--;
+	for (int i = 1; i <= difference_horizontally; i++) {
+	if (sign_of_difference_horizontally > 0 && sign_of_difference_upright > 0) {
+	if (Board[number_move_from + i][letter_move_from + i].Piece_on_square != Empty) return False;
+	}
+	else if (sign_of_difference_horizontally < 0 && sign_of_difference_upright > 0) {
+	if (Board[number_move_from + i][letter_move_from - i].Piece_on_square != Empty) return False;
+	}
+	else if (sign_of_difference_horizontally > 0 && sign_of_difference_upright < 0) {
+	if (Board[number_move_from - i][letter_move_from + i].Piece_on_square != Empty) return False;
+	}
+	else if (sign_of_difference_horizontally < 0 && sign_of_difference_upright < 0) {
+	if (Board[number_move_from - i][letter_move_from - i].Piece_on_square != Empty) return False;
+	}
+	}
+	}
+	return True;
+}
+
+Bool Rook_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour, Board_struct** Board) {
 
 	if (!first_condition_for_move(letter_move_to, number_move_to, number_move_from, letter_move_from, Is_it_empty, colour)) return False;
 
-		if ((letter_move_to == letter_move_from || number_move_to == number_move_from) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) return True;
+	if ((letter_move_to == letter_move_from || number_move_to == number_move_from) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) {
+		int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
+		 //sign of difference horizontally -> 0
+		 //sign_of_difference_upright      -> 1
+		 //difference horizontally         -> 2
+	     //difference upright              -> 3
+		array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move, letter_move_to, number_move_to, number_move_from, letter_move_from);
+		/*
+		int sign_of_difference_horizontally = letter_move_to - letter_move_from;
+		int sign_of_difference_upright = number_move_to - number_move_from;
+		int difference_horizontally = abs(letter_move_to - letter_move_from);
+		int difference_upright = abs(number_move_to - number_move_from); */
+		if (!Check_is_it_empty_between_squares_Rook(array_with_info_about_diffrences_for_move[2], array_with_info_about_diffrences_for_move[0], number_move_from, letter_move_from, Board)) return False;
+		/*if (difference_horizontally) {
+			difference_horizontally--;
+			for (int i = 1; i <= difference_horizontally; i++) {
+				if (sign_of_difference_horizontally > 0) {
+					if (Board[number_move_from][letter_move_from + i].Piece_on_square != Empty) return False;
+				}
+				else if (sign_of_difference_horizontally < 0) {
+					if (Board[number_move_from][letter_move_from - i].Piece_on_square != Empty) return False;
+				}
+			}
+		} */
+		if (!Check_is_it_empty_between_squares_Rook(array_with_info_about_diffrences_for_move[3], array_with_info_about_diffrences_for_move[1], number_move_from, letter_move_from, Board)) return False;
+	/*	else if (difference_upright) {
+			difference_upright--;
+			for (int i = 1; i <= difference_upright; i++) {
+				if (sign_of_difference_upright > 0) {
+					if (Board[number_move_from + i][letter_move_from].Piece_on_square != Empty) return False;
+				}
+				else if (sign_of_difference_upright < 0) {
+					if (Board[number_move_from - i][letter_move_from].Piece_on_square != Empty) return False;
+				}
+			}
+		}*/
+	} return True;
+	
 		return False;
 	}
 
@@ -88,20 +167,63 @@ Bool Knight_move(char letter_move_to, char number_move_to, char number_move_from
 	return False;
 }
 
-Bool Bishop_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour) {
+Bool Bishop_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour, Board_struct** Board) {
 
 	if (!first_condition_for_move(letter_move_to, number_move_to, number_move_from, letter_move_from, Is_it_empty, colour)) return False;
 
-	if (abs(letter_move_from - letter_move_to) == abs(number_move_from - number_move_to) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) return True;
+	if (abs(letter_move_from - letter_move_to) == abs(number_move_from - number_move_to) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) {
+		int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
+		//sign of difference horizontally -> 0
+		//sign_of_difference_upright      -> 1
+		//difference horizontally         -> 2
+		//difference upright              -> 3
+		array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move, letter_move_to, number_move_to, number_move_from, letter_move_from);
+		if (!Check_is_it_empty_between_squares_Bishop) return False;
+		/*if (difference_horizontally) {
+			difference_horizontally--;
+			for (int i = 1; i <= difference_horizontally; i++) {
+				if (sign_of_difference_horizontally > 0 && sign_of_difference_upright > 0) {
+					if (Board[number_move_from + i][letter_move_from + i].Piece_on_square != Empty) return False;
+				}
+				else if (sign_of_difference_horizontally < 0 && sign_of_difference_upright > 0) {
+					if (Board[number_move_from + i][letter_move_from - i].Piece_on_square != Empty) return False;
+				}
+				else if (sign_of_difference_horizontally > 0 && sign_of_difference_upright < 0) {
+					if (Board[number_move_from - i][letter_move_from + i].Piece_on_square != Empty) return False;
+				}
+				else if (sign_of_difference_horizontally < 0 && sign_of_difference_upright < 0) {
+					if (Board[number_move_from - i][letter_move_from - i].Piece_on_square != Empty) return False;
+				}
+			}
+		}*/
+	} return True;
+
 	return False;
 }
 
-Bool Queen_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour) {
+Bool Queen_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour, Board_struct** Board) {
 
 	if (!first_condition_for_move(letter_move_to, number_move_to, number_move_from, letter_move_from, Is_it_empty, colour)) return False;
 
-	if ((letter_move_to == letter_move_from || number_move_to == number_move_from) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) return True;
-	if (abs(letter_move_from - letter_move_to) == abs(number_move_from - number_move_to) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) return True;
+	if ((letter_move_to == letter_move_from || number_move_to == number_move_from) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) { //Rook's move type
+		int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
+		
+		array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move, letter_move_to, number_move_to, number_move_from, letter_move_from);
+		
+		if (!Check_is_it_empty_between_squares_Rook(array_with_info_about_diffrences_for_move[2], array_with_info_about_diffrences_for_move[0], number_move_from, letter_move_from, Board)) return False;
+		
+		if (!Check_is_it_empty_between_squares_Rook(array_with_info_about_diffrences_for_move[3], array_with_info_about_diffrences_for_move[1], number_move_from, letter_move_from, Board)) return False;
+		
+	} else if (abs(letter_move_from - letter_move_to) == abs(number_move_from - number_move_to) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) { //Bishop's move type
+	
+		int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
+		//sign of difference horizontally -> 0
+		//sign_of_difference_upright      -> 1
+		//difference horizontally         -> 2
+		//difference upright              -> 3
+		array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move, letter_move_to, number_move_to, number_move_from, letter_move_from);
+		if (!Check_is_it_empty_between_squares_Bishop) return False;
+	} return True;
 	return False;
 }
 
