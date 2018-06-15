@@ -28,8 +28,23 @@ Board_struct** Fill_Board(Board_struct** Board) { //wypelnianie szachownicy pion
 	for (int i = 2; i < 6; i++) {
 		for (int j = 0; j < 8; j++) Board[i][j].Piece_on_square = Empty;
 	}
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 8; j++) {
+			Board[i][j].have_it_been_moved = False;
+		}
+	}
+	for (int i = 6; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			Board[i][j].have_it_been_moved = False;
+		}
+	}
+	for (int i = 2; i < 6; i++) {
+		for (int j = 0; j < 8; j++) {
+			Board[i][j].have_it_been_moved = True;
+		}
+	}
 	return Board;
-}  
+}
 
 Board_struct** Make_Board() {		//tworzenie szachownicy w strukturze dynamicznej
 	Board_struct ** Board = calloc(8, sizeof(Pieces*));
@@ -45,7 +60,6 @@ Board_struct** Make_Board() {		//tworzenie szachownicy w strukturze dynamicznej
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			Board[i][j].letter = filling_letter;
-			Board[i][j].have_it_been_moved = False;
 		} filling_letter++;
 	}
 	Board =  Fill_Board(Board); //wypelnienie tablicy 
@@ -227,7 +241,7 @@ Bool Queen_move(char letter_move_to, char number_move_to, char number_move_from,
 	return False;
 }
 
-Bool Pawn_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour, Bool Have_it_been_moved) {
+Bool Pawn_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour, Bool Have_it_been_moved, Board_struct last_enemy_move) {
 
 	if (!first_condition_for_move(letter_move_to, number_move_to, number_move_from, letter_move_from, Is_it_empty, colour)) return False;
 
@@ -237,6 +251,8 @@ Bool Pawn_move(char letter_move_to, char number_move_to, char number_move_from, 
 		}
 		else if ((number_move_to - number_move_from) == 1 && letter_move_to == letter_move_from && Is_it_empty == Empty) return True;  //ruch bialym pionem o jedno pole do przodu
 		else if ((number_move_to - number_move_from) == 1 && abs(letter_move_from - letter_move_to) == 1 && Is_it_empty < 0) return True; //zbicie w skosie przeciwnika
+		else if (number_move_to == 6 && number_move_from == 5 && last_enemy_move.number == 5 && last_enemy_move.Piece_on_square == Black_Pawn && abs(letter_move_to - letter_move_from) == 1)
+			return True;  //bicie w przelocie
 		}
 	if (colour < 0) { //czarny pion
 		if (!Have_it_been_moved) {
@@ -244,7 +260,10 @@ Bool Pawn_move(char letter_move_to, char number_move_to, char number_move_from, 
 		}
 		else if ((number_move_to - number_move_from) == -1 && letter_move_to == letter_move_from && Is_it_empty == Empty) return True;  //ruch czarnym pionem o jedno pole do przodu
 		else if ((number_move_to - number_move_from) == -1 && abs(letter_move_from - letter_move_to) == 1 && Is_it_empty > 0) return True; //zbicie w skosie przeciwnika
+		else if (number_move_to == 3 && number_move_from == 4 && last_enemy_move.number == 4 && last_enemy_move.Piece_on_square == White_Pawn && abs(letter_move_to - letter_move_from) == 1)
+			return True;  //bicie w przelocie
 	}
+	return False;
 	}
 
 
