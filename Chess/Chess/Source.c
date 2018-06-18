@@ -49,17 +49,9 @@ Board_struct** Fill_Board(Board_struct** Board) { //wypelnianie szachownicy pion
 	}
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < 8; j++) {
-			Board[i][j].have_it_been_moved = False;
-		}
-	}
-	for (int i = 6; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			Board[i][j].have_it_been_moved = False;
-		}
-	}
-	for (int i = 2; i < 6; i++) {
-		for (int j = 0; j < 8; j++) {
-			Board[i][j].have_it_been_moved = True;
+			if (i > 1 && i < 6)
+				Board[i][j].have_it_been_moved = True;
+			else Board[i][j].have_it_been_moved = False;
 		}
 	}
 	return Board;
@@ -97,7 +89,8 @@ Bool first_condition_for_move(Pieces Is_it_empty, Pieces colour) {
 	return True;
 }
 
-Bool King_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour) {
+Bool King_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty,
+	Pieces colour) {
 
 	if (!first_condition_for_move(Is_it_empty, colour)) return False;
 
@@ -108,7 +101,8 @@ Bool King_move(char letter_move_to, char number_move_to, char number_move_from, 
 			return True;
 	}
 
-int *diffrences_for_move(int *array_with_info_about_diffrences_for_move, char letter_move_to, char number_move_to, char number_move_from, char letter_move_from){
+int *diffrences_for_move(int *array_with_info_about_diffrences_for_move, char letter_move_to, char number_move_to,
+	char number_move_from, char letter_move_from){
 	array_with_info_about_diffrences_for_move[0] = letter_move_to - letter_move_from; //sign of difference horizontally
 	array_with_info_about_diffrences_for_move[1] = number_move_to - number_move_from; //sign_of_difference_upright
 	array_with_info_about_diffrences_for_move[2] = abs(letter_move_to - letter_move_from); //difference horizontally
@@ -116,7 +110,8 @@ int *diffrences_for_move(int *array_with_info_about_diffrences_for_move, char le
 	return array_with_info_about_diffrences_for_move;
 }
 
-Bool Check_is_it_empty_between_squares_Rook(int orientation, int difference, int sign_of_difference, int number_move_from, int letter_move_from, Board_struct** Board) {
+Bool Check_is_it_empty_between_squares_Rook(int orientation, int difference, int sign_of_difference,
+	int number_move_from, int letter_move_from, Board_struct** Board) {
 	if (difference) {
 		difference--;
 		switch (orientation) {
@@ -143,7 +138,8 @@ Bool Check_is_it_empty_between_squares_Rook(int orientation, int difference, int
 	} return True;
 }
 
-Bool Check_is_it_empty_between_squares_Bishop (int difference_horizontally, int sign_of_difference_horizontally, int sign_of_difference_upright, int number_move_from, int letter_move_from, Board_struct** Board) {
+Bool Check_is_it_empty_between_squares_Bishop (int difference_horizontally, int sign_of_difference_horizontally,
+	int sign_of_difference_upright, int number_move_from, int letter_move_from, Board_struct** Board) {
 	if (difference_horizontally) {
 	difference_horizontally--;
 	for (int i = 1; i <= difference_horizontally; i++) {
@@ -164,7 +160,8 @@ Bool Check_is_it_empty_between_squares_Bishop (int difference_horizontally, int 
 	return True;
 }
 
-Bool Main_funct_is_it_empty_Rook(Board_struct** Board, int letter_move_to, int number_move_to, int number_move_from, int letter_move_from) { //wartosci pomniejszone dla tablicy
+Bool Main_funct_is_it_empty_Rook(Board_struct** Board, int letter_move_to, int number_move_to, int number_move_from,
+	int letter_move_from) { //wartosci pomniejszone dla tablicy
 	int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
 	//sign of difference horizontally -> 0
 	//sign_of_difference_upright      -> 1
@@ -185,7 +182,8 @@ Bool Main_funct_is_it_empty_Rook(Board_struct** Board, int letter_move_to, int n
 	return True;
 }
 
-Bool Main_funct_is_it_empty_Bishop(int letter_move_to, int number_move_to, int number_move_from, int letter_move_from, Board_struct** Board) {
+Bool Main_funct_is_it_empty_Bishop(int letter_move_to, int number_move_to, int number_move_from, int letter_move_from,
+	Board_struct** Board) {
 	int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
 	//sign of difference horizontally -> 0
 	//sign_of_difference_upright      -> 1
@@ -200,7 +198,8 @@ Bool Main_funct_is_it_empty_Bishop(int letter_move_to, int number_move_to, int n
 	return True;
 }
 
-Bool Rook_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour, Board_struct** Board) {
+Bool Rook_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from,
+	Pieces Is_it_empty, Pieces colour, Board_struct** Board) {
 
 	if (!first_condition_for_move(Is_it_empty, colour)) return False;
 
@@ -212,7 +211,8 @@ Bool Rook_move(char letter_move_to, char number_move_to, char number_move_from, 
 	return True;
 }
 
-Bool Knight_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour) {
+Bool Knight_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from,
+	Pieces Is_it_empty, Pieces colour) {
 
 	if (!first_condition_for_move(Is_it_empty, colour)) return False;
 
@@ -221,7 +221,8 @@ Bool Knight_move(char letter_move_to, char number_move_to, char number_move_from
 	return False;
 }
 
-Bool Bishop_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour, Board_struct** Board) {
+Bool Bishop_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from,
+	Pieces Is_it_empty, Pieces colour, Board_struct** Board) {
 
 	if (!first_condition_for_move(Is_it_empty, colour)) return False;
 
@@ -233,7 +234,8 @@ Bool Bishop_move(char letter_move_to, char number_move_to, char number_move_from
 	return True;
 }
 
-Bool Queen_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour, Board_struct** Board) {
+Bool Queen_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from,
+	Pieces Is_it_empty, Pieces colour, Board_struct** Board) {
 
 	if (!first_condition_for_move(Is_it_empty, colour)) return False;
 
@@ -270,7 +272,8 @@ Bool Queen_move(char letter_move_to, char number_move_to, char number_move_from,
 	return True;
 }
 
-Bool Pawn_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, Pieces Is_it_empty, Pieces colour, Bool Have_it_been_moved, Board_struct last_enemy_move) {
+Bool Pawn_move(char letter_move_to, char number_move_to, char number_move_from, char letter_move_from, 
+	Pieces Is_it_empty, Pieces colour, Bool Have_it_been_moved, Board_struct last_enemy_move) {
 
 	if (!first_condition_for_move(Is_it_empty, colour)) return False;
 
@@ -297,6 +300,17 @@ Bool Pawn_move(char letter_move_to, char number_move_to, char number_move_from, 
 	}
 	return False;
 	}
+
+Bool Is_it_correct_move(Board_struct** Board, Pieces Which_one, Bool is_it_correct, int x, int y, int oldX, int oldY,
+	Board_struct last_move) {
+	if (abs(Which_one) == White_King) is_it_correct = King_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square);
+	else if (abs(Which_one) == White_Queen) is_it_correct = Queen_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board);
+	else if (abs(Which_one) == White_Rook) is_it_correct = Rook_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board);
+	else if (abs(Which_one) == White_Knight) is_it_correct = Knight_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square);
+	else if (abs(Which_one) == White_Bishop) is_it_correct = Bishop_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board);
+	else if (abs(Which_one) == White_Pawn) is_it_correct = Pawn_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board[oldY][oldX].have_it_been_moved, last_move);
+
+}
 
 Bool Does_Rook_threaten_King(Board_struct** Board, Pieces colour_of_King, Pieces colour_of_Rook) {		//zwraca True gdy krol jest szachowany
 		for (int i = 0; i < 8; i++) {
@@ -325,7 +339,7 @@ Bool Does_Bishop_threaten_King(Board_struct** Board, Pieces colour_of_King, Piec
 					for (int b = 0; b < 8; b++) {
 						if (Board[a][b].Piece_on_square == colour_of_King) {
 							if (abs(a - i) == abs(b - j)) {
-								if (Main_funct_is_it_empty_Bishop(Board, b, a, i, j)) return True;
+								if (Main_funct_is_it_empty_Bishop(b, a, i, j, Board)) return True;
 							}
 						}
 					}
@@ -354,39 +368,102 @@ Bool Does_Knight_threaten_King(Board_struct** Board, Pieces colour_of_King, Piec
 	return False;
 }
 
+Bool searching_threat_of_King_from_Queen(Board_struct** Board, Pieces colour_of_King, int number_of_position_Queen,
+	int letter_of_position_Queen) {
+	for (int a = 0; a < 8; a++) {
+		for (int b = 0; b < 8; b++) {
+			if (Board[a][b].Piece_on_square == colour_of_King) {
+				if (a == number_of_position_Queen || b == letter_of_position_Queen) {
+					if (Main_funct_is_it_empty_Rook(Board, b, a, number_of_position_Queen, letter_of_position_Queen)) return True;
+				}
+				else if (abs(a - number_of_position_Queen) == abs(b - letter_of_position_Queen)) {
+					if (Main_funct_is_it_empty_Bishop(b, a, number_of_position_Queen, letter_of_position_Queen, Board)) return True;
+				}
+			}
+		}
+	}
+	return False;
+}
+
 Bool Does_Queen_threaten_King(Board_struct** Board, Pieces colour_of_King, Pieces colour_of_Queen) {
+	 
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (Board[i][j].Piece_on_square == colour_of_Queen) {
+					for (int a = 0; a < 8; a++) {
+						for (int b = 0; b < 8; b++) {
+							if (Board[a][b].Piece_on_square == colour_of_King) {
+								if (a == i || b == j) {
+									if (Main_funct_is_it_empty_Rook(Board, b, a, i, j)) return True;
+								}
+								else if (abs(a - i) == abs(b - j)) {
+									if (Main_funct_is_it_empty_Bishop(b, a, i, j, Board)) return True;
+								}
+							}
+						}
+					}
+			}
+		}
+	}
+	return False;
+}
+
+Bool Does_Pawn_threaten_King(Board_struct** Board, Pieces colour_of_King, Pieces colour_of_Pawn) {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
-			if (Board[i][j].Piece_on_square == colour_of_Queen) {
+			if (Board[i][j].Piece_on_square == colour_of_Pawn) {
 				for (int a = 0; a < 8; a++) {
 					for (int b = 0; b < 8; b++) {
 						if (Board[a][b].Piece_on_square == colour_of_King) {
-							if (a == i || b == j) {
-								if (Main_funct_is_it_empty_Rook(Board, b, a, i, j)) return True;
+							if (colour_of_Pawn == White_Pawn) {
+								if (a - i == 1 && abs(b - j) == 1) {					//White Pawn threaten Black King
+									return True;
+								}
 							}
-							else if (abs(a - i) == abs(b - j)) {
-								if (Main_funct_is_it_empty_Bishop(Board, b, a, i, j)) return True;
+							else if (colour_of_Pawn == Black_Pawn){
+								{ if (a - i == -1 && abs(b - j) == 1)					//Black Pawn threaten White King
+									return True;
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-	} return False;
+	} 
+	return False;
+}
+
+Bool Is_King_threatened(Board_struct** Board, Pieces colour_of_King, Pieces colour_of_threating) {
+	//position_Piece daje wspolrzedne zamierzonego ruchu 
+	if (colour_of_threating > 0) {
+		if (Does_Rook_threaten_King(Board, colour_of_King, White_Rook)) return True;
+		else if (Does_Knight_threaten_King(Board, colour_of_King, White_Knight)) return True;
+		else if (Does_Bishop_threaten_King(Board, colour_of_King, White_Bishop)) return True;
+		else if (Does_Queen_threaten_King(Board, colour_of_King, White_Queen)) return True;
+		else if (Does_Pawn_threaten_King(Board, colour_of_King, White_Pawn)) return True;
+	} else if (colour_of_threating < 0) {
+		if (Does_Rook_threaten_King(Board, colour_of_King, Black_Rook)) return True;
+		else if (Does_Knight_threaten_King(Board, colour_of_King, Black_Knight)) return True;
+		else if (Does_Bishop_threaten_King(Board, colour_of_King, Black_Bishop)) return True;
+		else if (Does_Queen_threaten_King(Board, colour_of_King, Black_Queen)) return True;
+		else if (Does_Pawn_threaten_King(Board, colour_of_King, Black_Pawn)) return True;
+	}
+	return False;
 }
 
 void display_Piece(Board_struct** Board, int i, int j){
-		if (abs(Board[i][j].Piece_on_square) == 1)
+		if (abs(Board[i][j].Piece_on_square) == White_King)
 			printf(" K");
-		else if (abs(Board[i][j].Piece_on_square) == 2)
+		else if (abs(Board[i][j].Piece_on_square) == White_Queen)
 			printf(" Q");
-		else if (abs(Board[i][j].Piece_on_square) == 3)
+		else if (abs(Board[i][j].Piece_on_square) == White_Rook)
 			printf(" R");
-		else if (abs(Board[i][j].Piece_on_square) == 4)
+		else if (abs(Board[i][j].Piece_on_square) == White_Bishop)
 			printf(" B");
-		else if (abs(Board[i][j].Piece_on_square) == 5)
+		else if (abs(Board[i][j].Piece_on_square) == White_Knight)
 			printf("KN");
-		else if (abs(Board[i][j].Piece_on_square) == 6)
+		else if (abs(Board[i][j].Piece_on_square) == White_Pawn)
 			printf(" P");
 	setColor(WHITE);
 }
@@ -513,55 +590,130 @@ Bool Help_for_choosing_piece(Player turn, Pieces Which_one) {
 }
 	
 void playing(Player turn, Board_struct** Board) {
-	
-	int x = 0;
-	int y = 0;
-	int oldX;
-	int oldY;
-	char* info;
-	Bool is_it_right_move;
-	Bool is_it_correct = True;
-	Pieces Which_one;
+
+	int x = 0, y = 0;
+	int oldX, oldY;
+	char* info = "Choose piece";
+	Bool possible_move = True, is_it_correct = True, black_King_threatened = False, black_King_threatened2 = False;
+	Bool white_King_threatened = False, white_King_threatened2 = False;   //various responsible for get knowing about choosen right target place for piece
+   //various responsible for get knowing about choosen right colour of piece and target place
+	// napisze potem
+	Pieces Which_one;			//various required
 	Board_struct last_move = Board[0][0];
-	while (1) {
-		do {
-			do {
-				if (!is_it_correct) {
-					if (!is_it_right_move)
-						info = "You can't do that, please choose correct piece";
-					else info = "Please choose correct piece";
+	while(1){
+		do {		//warunek z wybraniem odpowiedniego miejsca wedlug podstawowych zasad poruszania sie
+			do {		//warunek z wybraniem dobrej figury
+				if (!is_it_correct || !possible_move) {
+					if (!is_it_correct) info = "Please choose correct piece";
+					else if (!possible_move) info = "You can't do that, please choose correct piece";
 					Board[oldY][oldX].is_it_chosen = False;
 				}
-				else info = "Choose piece";
+				else info = "Choose piece";			//Chosing piece	
+				possible_move = True;			//various responsible for get knowing about choosen right target place for piece
 				ArrowControl(Board, turn, &x, &y, info);
-				Board[y][x].is_it_chosen = True;
+				Board[y][x].is_it_chosen = True;		//Taken a piece
 				oldX = x;
 				oldY = y;
 				Which_one = Board[y][x].Piece_on_square;
-				is_it_correct = Help_for_choosing_piece(turn, Which_one);
-				is_it_right_move = True;
+				is_it_correct = Help_for_choosing_piece(turn, Which_one); //checking does player choosed correct colour of piece
 			} while (!is_it_correct);
 
 			info = "Choose place for your piece";
 			ArrowControl(Board, turn, &x, &y, info);
-			if (abs(Which_one) == White_King) is_it_correct = King_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square);
-			else if (abs(Which_one) == White_Queen) is_it_correct = Queen_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board);
-			else if (abs(Which_one) == White_Rook) is_it_correct = Rook_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board);
-			else if (abs(Which_one) == White_Knight) is_it_correct = Knight_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square);
-			else if (abs(Which_one) == White_Bishop) is_it_correct = Bishop_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board);
-			else if (abs(Which_one) == White_Pawn) is_it_correct = Pawn_move((char)x + 97, (char)y + 49, (char)oldY + 49, (char)oldX + 97, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board[oldY][oldX].have_it_been_moved, last_move);
-			if (!is_it_correct) is_it_right_move = False;
-		} while (!is_it_correct);
-
+			possible_move = Is_it_correct_move(Board, Which_one, is_it_correct, x, y, oldX, oldY, last_move);
+		} while (!possible_move);
 		Board[y][x].Piece_on_square = Which_one;
 		Board[oldY][oldX].Piece_on_square = Empty;
-		Board[oldY][oldX].have_it_been_moved = True;
-		Board[oldY][oldX].is_it_chosen = False;
+	// ?	Board[oldY][oldX].have_it_been_moved = True; dodac po zapewnieniu, ¿e ruch jest na pewno ok
+		Board[oldY][oldX].is_it_chosen = False;			//przestawianie
+
+		black_King_threatened = Is_King_threatened(Board, Black_King, White_Rook);
+		white_King_threatened = Is_King_threatened(Board, White_King, Black_Rook);
+	//	if (!possible_move) is_it_correct = False;
+		
+	if (turn == White) turn = Black;
+	else turn = White;
+	last_move = Board[y][x];
+
+	if (black_King_threatened) { //szchowany czarny Król
+		do {	//gdy krol dalej szachowany
+			do {	//warunek z prawidlowym ruchem z podstawowym poruszaniem sie bierek
+				do {		// czy wybrano prawidlowy kolor bierki - bialy
+					if (!is_it_correct || !possible_move || black_King_threatened2) {
+						if (!is_it_correct) info = "Please choose correct piece";
+						else if(!possible_move) info = "You can't do that, please choose correct piece";
+						else if (black_King_threatened2) {
+							info = "Black King is threatened, please do correct move";
+							Board[y][x].Piece_on_square = Empty;
+							Board[oldY][oldX].Piece_on_square = Which_one;	//przestawianie
+						}
+						Board[oldY][oldX].is_it_chosen = False;
+					}
+					possible_move = True;			//various responsible for get knowing about choosen right target place for piece
+					ArrowControl(Board, turn, &x, &y, info);
+					Board[y][x].is_it_chosen = True;		//Taken a piece
+					oldX = x;
+					oldY = y;
+					Which_one = Board[y][x].Piece_on_square;
+					is_it_correct = Help_for_choosing_piece(turn, Which_one); //checking does player choosed correct colour of piece
+
+				} while (!is_it_correct);
+
+				info = "Choose place for your piece";
+				ArrowControl(Board, turn, &x, &y, info);
+				possible_move = Is_it_correct_move(Board, Which_one, is_it_correct, x, y, oldX, oldY, last_move);
+			} while (!possible_move);
+			Board[y][x].Piece_on_square = Which_one;
+			Board[oldY][oldX].Piece_on_square = Empty;
+		    black_King_threatened2 = Is_King_threatened(Board, Black_King, White_Rook);
+		} while (black_King_threatened2);
+
+		if (turn == White) turn = Black;
+		else turn = White;
+		last_move = Board[y][x];
+			}
+
+	else if (white_King_threatened) { //szchowany bialy Król
+		do {	//gdy krol dalej szachowany
+			do {	//warunek z prawidlowym ruchem z podstawowym poruszaniem sie bierek
+				do {		// czy wybrano prawidlowy kolor bierki - bialy
+							
+					if (!is_it_correct || !possible_move || white_King_threatened2) {
+						if (!is_it_correct) info = "Please choose correct piece";
+						else if (!possible_move) info = "You can't do that, please choose correct piece";
+						else if (white_King_threatened2) {
+							info = "White King is threatened, please do correct move";
+							Board[y][x].Piece_on_square = Empty;
+							Board[oldY][oldX].Piece_on_square = Which_one;	//przestawianie
+						}
+						Board[oldY][oldX].is_it_chosen = False;
+					}
+					possible_move = True;			//various responsible for get knowing about choosen right target place for piece
+					ArrowControl(Board, turn, &x, &y, info);
+					Board[y][x].is_it_chosen = True;		//Taken a piece
+					oldX = x;
+					oldY = y;
+					Which_one = Board[y][x].Piece_on_square;
+					is_it_correct = Help_for_choosing_piece(turn, Which_one); //checking does player choosed correct colour of piece
+
+				} while (!is_it_correct);
+
+				info = "Choose place for your piece";
+				ArrowControl(Board, turn, &x, &y, info);
+				possible_move = Is_it_correct_move(Board, Which_one, is_it_correct, x, y, oldX, oldY, last_move);
+			} while (!possible_move);
+			Board[y][x].Piece_on_square = Which_one;
+			Board[oldY][oldX].Piece_on_square = Empty;
+			white_King_threatened2 = Is_King_threatened(Board, White_King, Black_Rook);
+		} while (white_King_threatened2);
 
 		if (turn == White) turn = Black;
 		else turn = White;
 		last_move = Board[y][x];
 	}
+
+	Board[oldY][oldX].have_it_been_moved = True;		
+		}
 }
 
 int main() {
