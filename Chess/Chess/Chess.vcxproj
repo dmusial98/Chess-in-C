@@ -113,7 +113,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="control_and_display.c" />
+    <ClCompile Include="danger_of_King.c" />
+    <ClCompile Include="making_chessboard.c" />
+    <ClCompile Include="moves.c" />
+    <ClCompile Include="play_support.c" />
     <ClCompile Include="Source.c" />
+    <ClCompile Include="support_chekmate.c" />
+    <ClCompile Include="support_for_moves.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="control_and_display.h" />
+    <ClInclude Include="danger_of_King.h" />
+    <ClInclude Include="definitions.h" />
+    <ClInclude Include="making_chessboard.h" />
+    <ClInclude Include="moves.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="play_support.h" />
+    <ClInclude Include="structures_and_enums.h" />
+    <ClInclude Include="support_checkmate.h" />
+    <ClInclude Include="support_for_moves.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

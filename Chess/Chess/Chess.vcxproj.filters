@@ -18,5 +18,58 @@
     <ClCompile Include="Source.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="moves.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="support_for_moves.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="making_chessboard.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="danger_of_King.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="control_and_display.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="support_chekmate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="play_support.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="control_and_display.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="danger_of_King.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="play_support.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="support_checkmate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="moves.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="making_chessboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="support_for_moves.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="structures_and_enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
