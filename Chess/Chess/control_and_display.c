@@ -1,7 +1,9 @@
-#include"control_and_display.h"
-#include"rlutil.h"
-#include"definitions.h"
 #include "structures_and_enums.h"
+#include"control_and_display.h"
+#include"definitions.h"
+#include"rlutil.h"
+#include"file_support.h"
+
 
 
 #include <stdlib.h>
@@ -91,18 +93,26 @@ void displayChessboard(Board_struct **Board, Player *turn, int x, int y, char* i
 	printf("Red -> BLACK, Yellow - WHITE");
 }
 
-void arrow_control(Board_struct **Board, Player *turn, int * x, int * y, char * str1){
+void arrow_control(Board_struct **Board, Player *turn, int * x, int * y, char * str1, int *Which_function ){
 	int arrow;
 	int stop;
 	while (1)
 	{
-		displayChessboard(Board, turn, *x, *y, str1);
-		// printf statistics
+		displayChessboard(Board, turn, *x, *y, str1); 
 		stop = getch();
 		if (stop == 13) // PRESS to ENTER
 		{
 			return;
 		}
+	/*	else if (stop == 's') {
+			displayChessboard(Board, turn, *x, *y, "Please write the name of file");
+			
+			Bool saving = save_to_file(, str1, Board, turn, Which_function);
+			if (saving) 
+				displayChessboard(Board, turn, *x, *y, "Saved succesfully");
+			else displayChessboard(Board, turn, *x, *y, "Something went wrong");
+			}*/
+		//}
 		arrow = getch();
 
 		if (arrow == DOWN_ARROW) {

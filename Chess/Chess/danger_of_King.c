@@ -117,7 +117,7 @@ Bool Is_King_threatened(Board_struct** Board, Pieces colour_of_King, Pieces colo
 		else if (Does_Queen_threaten_King(Board, colour_of_King, White_Queen)) return True;
 		else if (Does_Pawn_threaten_King(Board, colour_of_King, White_Pawn)) return True;
 	}
-	else if (colour_of_threating < 0) {
+	else if (colour_of_threating < 0) {  //mozna zapisac szybciej
 		if (Does_Rook_threaten_King(Board, colour_of_King, Black_Rook)) return True;
 		else if (Does_Knight_threaten_King(Board, colour_of_King, Black_Knight)) return True;
 		else if (Does_Bishop_threaten_King(Board, colour_of_King, Black_Bishop)) return True;

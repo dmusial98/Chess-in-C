@@ -115,6 +115,7 @@
   <ItemGroup>
     <ClCompile Include="control_and_display.c" />
     <ClCompile Include="danger_of_King.c" />
+    <ClCompile Include="file_support.c" />
     <ClCompile Include="making_chessboard.c" />
     <ClCompile Include="moves.c" />
     <ClCompile Include="play_support.c" />
@@ -126,6 +127,7 @@
     <ClInclude Include="control_and_display.h" />
     <ClInclude Include="danger_of_King.h" />
     <ClInclude Include="definitions.h" />
+    <ClInclude Include="file_support.h" />
     <ClInclude Include="making_chessboard.h" />
     <ClInclude Include="moves.h" />
     <ClInclude Include="player.h" />

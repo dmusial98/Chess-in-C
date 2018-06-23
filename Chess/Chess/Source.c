@@ -20,5 +20,6 @@ int main() {
 		if (who_won == White) displayChessboard(Board, &turn, 0, 0, "White pieces won\n\n");
 		else displayChessboard(Board, &turn, 0, 0, "Black pieces won\n\n");
 
+		int cos = 10;
 	return 0;
 }

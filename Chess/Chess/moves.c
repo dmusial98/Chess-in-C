@@ -27,8 +27,9 @@ Bool Rook_move(int letter_move_to, int number_move_to, int number_move_from, int
 	{
 		if (!Main_funct_is_it_empty_Rook(Board, letter_move_to, number_move_to, number_move_from, letter_move_from))
 			return False;
+		else return True;
 	}
-	return True;
+	return False;
 }
 
 Bool Knight_move(int letter_move_to, int number_move_to, int number_move_from, int letter_move_from,
@@ -46,12 +47,13 @@ Bool Bishop_move(int letter_move_to, int number_move_to, int number_move_from, i
 
 	if (!first_condition_for_move(Is_it_empty, colour)) return False;
 
-	if (abs(letter_move_from - letter_move_to) == abs(number_move_from - number_move_to) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) {
+	if (abs(letter_move_from - letter_move_to) == abs(number_move_from - number_move_to) && (number_move_to != number_move_from && letter_move_to != letter_move_from))
+	{
 		if (!Main_funct_is_it_empty_Bishop(letter_move_to, number_move_to, number_move_from, letter_move_from, Board))
 			return False;
+		else return True;
 	}
 	else return False;
-	return True;
 }
 
 Bool Queen_move(int letter_move_to, int number_move_to, int number_move_from, int letter_move_from,

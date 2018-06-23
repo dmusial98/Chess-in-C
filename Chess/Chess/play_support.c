@@ -36,7 +36,7 @@ Player playing(Player *turn, Board_struct** Board) {
 	char* info = "Choose piece";
 	Bool possible_move = True, is_it_correct = True, black_King_threatened = False, black_King_threatened2 = False;
 	Bool white_King_threatened = False, white_King_threatened2 = False;   //various responsible for get knowing about choosen right target place for piece
-																		  //various responsible for get knowing about choosen right colour of piece and target place
+	Bool Maybe_it_is_checkmate;												  //various responsible for get knowing about choosen right colour of piece and target place
 																		  // napisze potem
 	Pieces Which_one, What_was_there;			//various required
 	Board_struct last_move = Board[0][0];
@@ -82,15 +82,10 @@ Player playing(Player *turn, Board_struct** Board) {
 		} while ((*turn == White && white_King_threatened == True) || (*turn == Black && black_King_threatened == True));
 		//wystawienie sie na szacha
 
-		if (support_for_condition_from_check(&black_King_threatened, &is_it_correct, &possible_move, &white_King_threatened, &oldX,
-			&oldY, &x, &y, &Which_one, &last_move, Board, info, &What_was_there, turn) == Black) return Black;
-		else if (support_for_condition_from_check(&black_King_threatened, &is_it_correct, &possible_move, &white_King_threatened, &oldX,
-			&oldY, &x, &y, &Which_one, &last_move, Board, info, &What_was_there, turn) == White) return White;
-
-		if (*turn == White) *turn = Black;
-		else *turn = White;
-		last_move = Board[y][x];
-
+		Maybe_it_is_checkmate = support_for_condition_from_check(&black_King_threatened, &is_it_correct, &possible_move, &white_King_threatened, &oldX,
+			&oldY, &x, &y, &Which_one, &last_move, Board, info, &What_was_there, turn);
+		if (Maybe_it_is_checkmate == White) return White;
+		else if (Maybe_it_is_checkmate == Black) return Black;
 
 		if (abs(Which_one) == White_Pawn)
 			Pawn_promotion(Board, y, x, turn, &x, &y);
@@ -99,11 +94,15 @@ Player playing(Player *turn, Board_struct** Board) {
 
 		//szachowanie po promocji piona
 
-		if (support_for_condition_from_check(&black_King_threatened, &is_it_correct, &possible_move, &white_King_threatened, &oldX,
-			&oldY, &x, &y, &Which_one, &last_move, Board, info, &What_was_there, turn) == Black) return Black;
-		else if (support_for_condition_from_check(&black_King_threatened, &is_it_correct, &possible_move, &white_King_threatened, &oldX,
-			&oldY, &x, &y, &Which_one, &last_move, Board, info, &What_was_there, turn) == White) return White;
+		Maybe_it_is_checkmate = support_for_condition_from_check(&black_King_threatened, &is_it_correct, &possible_move, &white_King_threatened, &oldX,
+			&oldY, &x, &y, &Which_one, &last_move, Board, info, &What_was_there, turn);
+		if (Maybe_it_is_checkmate == White) return White;
+		else if (Maybe_it_is_checkmate == Black) return Black;
 		//tutaj condition
+
+		if (*turn == White) *turn = Black;
+		else *turn = White;
+		last_move = Board[y][x];
 
 	}
 }
