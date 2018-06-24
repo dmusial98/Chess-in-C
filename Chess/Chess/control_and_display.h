@@ -1,5 +1,3 @@
-#include"structures_and_enums.h"
-
 #ifndef CONTROL_AND_DISPLAY_H
 #define CONTROL_AND_DISPLAY_H
 
@@ -12,6 +10,6 @@ void display_Piece(Board_struct** Board, int i, int j);
 void displayChessboard(Board_struct** Board, Player *turn, int x, int y, char* info);
 
 //controlling the pieces 
-void arrow_control(Board_struct** Board, Player *turn, int * x, int * y, char * str1);
-
+void arrow_control(Board_struct **Board, Player *turn, int *x, int *y, char *str1, int *Which_function,
+	Bool *white_King_threatened, Bool *black_King_threatened, Board_struct *last_move);
 #endif

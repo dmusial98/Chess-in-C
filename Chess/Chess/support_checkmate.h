@@ -14,12 +14,13 @@ Bool Is_it_checkmate_main_function(Board_struct** Board, Pieces colour_of_King, 
 //function pilot a game in check case
 Player checks_support(Bool *is_it_correct, Bool *possible_move, Bool *black_King_threatened, 
 	Bool *white_King_threatened, int *oldX, int *oldY, int *x, int *y, Pieces *Which_one,
-	Board_struct *last_move, Board_struct **Board, char* info, Pieces *What_was_there, Player *turn,
-	Pieces colour_of_King);
+	Board_struct *last_move, Board_struct **Board, char* info, Pieces *What_was_there,
+	Player *turn, Pieces colour_of_King, int *Which_function, Bool start_from_file);
 
 //function checks does King is threatened
-Player support_for_condition_from_check(Bool *black_King_threatened, Bool *is_it_correct, Bool *possible_move,
-	Bool *white_King_threatened, int *oldX, int *oldY, int *x, int *y, Pieces *Which_one, Board_struct *last_move,
-	Board_struct** Board, char* info, Pieces *What_was_there, Player *turn);
+Player support_for_condition_from_check(Bool *black_King_threatened, Bool *is_it_correct,
+	Bool *possible_move, Bool *white_King_threatened, int *oldX, int *oldY, int *x, int *y,
+	Pieces *Which_one, Board_struct *last_move, Board_struct** Board, char* info, Pieces *What_was_there,
+	Player *turn, int *Which_function, Bool start_from_file);
 
 #endif

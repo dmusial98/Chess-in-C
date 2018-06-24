@@ -1,7 +1,6 @@
 #ifndef DANGER_OF_KING_H
 #define DANGER_OF_KING_H
 
-
 // all funtions check does piece threaten King
 
 Bool Does_Rook_threaten_King(Board_struct** Board, Pieces colour_of_King, Pieces colour_of_Rook);

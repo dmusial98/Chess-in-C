@@ -4,12 +4,12 @@
 #include<stdlib.h>
 
 Bool first_condition_for_move(Pieces Is_it_empty, Pieces colour) {
-
+	//checking is piece on square have different colour than moving piece
 		if (colour < 0) {
 			if (Is_it_empty < 0) return False;
 		}
 		if (colour > 0) {
-			if (Is_it_empty > 0) return False;		//sprawdzenie czy bierka nie zbija bierki swojego koloru
+			if (Is_it_empty > 0) return False;	
 	}
 	return True;
 }
@@ -28,7 +28,7 @@ Bool Check_is_it_empty_between_squares_Rook(int orientation, int difference, int
 	if (difference) {
 		difference--;
 		switch (orientation) {
-
+			//orientation 0 -> horizontally, 1 -> upright
 		case 0:
 			for (int i = 1; i <= difference; i++) {
 				if (sign_of_difference > 0) {
@@ -74,19 +74,22 @@ Bool Check_is_it_empty_between_squares_Bishop(int difference_horizontally, int s
 }
 
 Bool Main_funct_is_it_empty_Rook(Board_struct** Board, int letter_move_to, int number_move_to, int number_move_from,
-	int letter_move_from) { //zwraca true jesli jest pusto pomiedzy dwoma polami w pionie lub poziomie -> styl ruchu dla wiezy
+	int letter_move_from) { // returning true if all squares between starting and target square -> Rook's move type
 	int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
 	//sign of difference horizontally -> 0
 	//sign_of_difference_upright      -> 1
 	//difference horizontally         -> 2
 	//difference upright              -> 3
-	array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move, letter_move_to, number_move_to, number_move_from, letter_move_from);
-	if (!Check_is_it_empty_between_squares_Rook(0, array_with_info_about_diffrences_for_move[2], array_with_info_about_diffrences_for_move[0], number_move_from, letter_move_from, Board))
+	array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move,
+		letter_move_to, number_move_to, number_move_from, letter_move_from);
+	if (!Check_is_it_empty_between_squares_Rook(0, array_with_info_about_diffrences_for_move[2],
+		array_with_info_about_diffrences_for_move[0], number_move_from, letter_move_from, Board))
 	{
 		free(array_with_info_about_diffrences_for_move);
 		return False;
 	}
-	if (!Check_is_it_empty_between_squares_Rook(1, array_with_info_about_diffrences_for_move[3], array_with_info_about_diffrences_for_move[1], number_move_from, letter_move_from, Board))
+	if (!Check_is_it_empty_between_squares_Rook(1, array_with_info_about_diffrences_for_move[3],
+		array_with_info_about_diffrences_for_move[1], number_move_from, letter_move_from, Board))
 	{
 		free(array_with_info_about_diffrences_for_move);
 		return False;
@@ -96,7 +99,7 @@ Bool Main_funct_is_it_empty_Rook(Board_struct** Board, int letter_move_to, int n
 }
 
 Bool Main_funct_is_it_empty_Bishop(int letter_move_to, int number_move_to, int number_move_from, int letter_move_from,
-	Board_struct** Board) {
+	Board_struct** Board) { // returning true if all squares between starting and target square -> Bishop's move type
 	int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
 	//sign of difference horizontally -> 0
 	//sign_of_difference_upright      -> 1
@@ -110,3 +113,4 @@ Bool Main_funct_is_it_empty_Bishop(int letter_move_to, int number_move_to, int n
 	}
 	return True;
 }
+

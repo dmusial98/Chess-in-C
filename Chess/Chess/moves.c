@@ -13,7 +13,7 @@ Bool King_move(int letter_move_to, int number_move_to, int number_move_from, int
 
 	if (abs(letter_move_to - letter_move_from) < 2 && abs(number_move_to - number_move_from) < 2) {
 		if (number_move_to == number_move_from && letter_move_to == letter_move_from) return False;
-	}
+	} 
 	else return False;
 	return True;
 }
@@ -26,7 +26,7 @@ Bool Rook_move(int letter_move_to, int number_move_to, int number_move_from, int
 	if (letter_move_to == letter_move_from || number_move_to == number_move_from)
 	{
 		if (!Main_funct_is_it_empty_Rook(Board, letter_move_to, number_move_to, number_move_from, letter_move_from))
-			return False;
+			return False; //chceking are empty squares between square starting and target place for Rook
 		else return True;
 	}
 	return False;
@@ -62,22 +62,33 @@ Bool Queen_move(int letter_move_to, int number_move_to, int number_move_from, in
 	if (!first_condition_for_move(Is_it_empty, colour)) return False;
 
 	if (letter_move_to == letter_move_from || number_move_to == number_move_from) { //Rook's move type
-		if (letter_move_from == letter_move_to && number_move_from == number_move_to) return False;  //checking does Queen stay in the same place?
+		if (letter_move_from == letter_move_to && number_move_from == number_move_to) return False; 
+		//checking does Queen stay in the same place?
+		
 		int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
-		array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move, letter_move_to, number_move_to, number_move_from, letter_move_from);
-		if (!Check_is_it_empty_between_squares_Rook(0, array_with_info_about_diffrences_for_move[2], array_with_info_about_diffrences_for_move[0], number_move_from, letter_move_from, Board))
+
+		array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move,
+			letter_move_to, number_move_to, number_move_from, letter_move_from);
+		//sign of difference horizontally -> 0
+		//sign_of_difference_upright      -> 1
+		//difference horizontally         -> 2
+		//difference upright              -> 3
+		if (!Check_is_it_empty_between_squares_Rook(0, array_with_info_about_diffrences_for_move[2], 
+			array_with_info_about_diffrences_for_move[0], number_move_from, letter_move_from, Board))
 		{
 			free(array_with_info_about_diffrences_for_move);
 			return False;
 		}
-		if (!Check_is_it_empty_between_squares_Rook(1, array_with_info_about_diffrences_for_move[3], array_with_info_about_diffrences_for_move[1], number_move_from, letter_move_from, Board))
+		if (!Check_is_it_empty_between_squares_Rook(1, array_with_info_about_diffrences_for_move[3],
+			array_with_info_about_diffrences_for_move[1], number_move_from, letter_move_from, Board))
 		{
 			free(array_with_info_about_diffrences_for_move);
 			return False;
 		}
 
 	}
-	else if (abs(letter_move_from - letter_move_to) == abs(number_move_from - number_move_to) && (number_move_to != number_move_from && letter_move_to != letter_move_from)) { //Bishop's move type
+	else if (abs(letter_move_from - letter_move_to) == abs(number_move_from - number_move_to) 
+		&& (number_move_to != number_move_from && letter_move_to != letter_move_from)) { //Bishop's move type
 
 		int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
 		//sign of difference horizontally -> 0
@@ -96,32 +107,41 @@ Bool Queen_move(int letter_move_to, int number_move_to, int number_move_from, in
 }
 
 Bool Pawn_move(int letter_move_to, int number_move_to, int number_move_from, int letter_move_from,
-	Pieces Is_it_empty, Pieces colour, Board_struct **Board, Bool Have_it_been_moved, Board_struct last_enemy_move, Player turn) {
+	Pieces Is_it_empty, Pieces colour, Board_struct **Board, Bool Have_it_been_moved, Board_struct last_enemy_move,
+	Player turn) {
 
 	if (!first_condition_for_move(Is_it_empty, colour)) return False;
-	if (colour > 0) { //bialy pion
+	if (colour > 0) { //white Pawn
 
-		if ((number_move_to - number_move_from) == 1 && letter_move_to == letter_move_from && Is_it_empty == Empty) return True;  //ruch bialym pionem o jedno pole do przodu
-		else if ((number_move_to - number_move_from) == 1 && abs(letter_move_from - letter_move_to) == 1 && Is_it_empty < 0) return True; //zbicie w skosie przeciwnika
-		else if ((number_move_to - number_move_from) == 2 && letter_move_to == letter_move_from && Is_it_empty == Empty && !Have_it_been_moved) {
-			if (!Main_funct_is_it_empty_Rook(Board, letter_move_to, number_move_to, number_move_to, letter_move_to)) return False;
+		if ((number_move_to - number_move_from) == 1 && letter_move_to == letter_move_from && Is_it_empty == Empty)
+			return True;  //move white Pawn one square forward
+		else if ((number_move_to - number_move_from) == 1 && abs(letter_move_from - letter_move_to) == 1 
+			&& Is_it_empty < 0) return True; //capture obliquely
+		else if ((number_move_to - number_move_from) == 2 && letter_move_to == letter_move_from && Is_it_empty == Empty
+			&& !Have_it_been_moved) {
+			if (!Main_funct_is_it_empty_Rook(Board, letter_move_to, number_move_to, number_move_to, letter_move_to))
+				return False;
+
 			return True;
-		}  //pierwszy ruch piona bialego
-		else if (number_move_to == 5 && number_move_from == 4 && last_enemy_move.number - 49 == 4 && last_enemy_move.Piece_on_square == Black_Pawn && abs(letter_move_to - letter_move_from) == 1) {
+		}  //First move of white Pawn
+		else if (number_move_to == 5 && number_move_from == 4 && last_enemy_move.number - 49 == 4 &&
+			last_enemy_move.Piece_on_square == Black_Pawn && abs(letter_move_to - letter_move_from) == 1) {
 			Board[4][letter_move_to].Piece_on_square = Empty;
-			return True;  //bicie w przelocie
+			return True;  //En passant
 		}
 	}
-	else if (colour < 0) { //czarny pion
-		if ((number_move_to - number_move_from) == -1 && letter_move_to == letter_move_from && Is_it_empty == Empty) return True;  //ruch czarnym pionem o jedno pole do przodu
-		else if ((number_move_to - number_move_from) == -1 && abs(letter_move_from - letter_move_to) == 1 && Is_it_empty > 0) return True; //zbicie w skosie przeciwnika
+	else if (colour < 0) { //black Pawn
+		if ((number_move_to - number_move_from) == -1 && letter_move_to == letter_move_from && Is_it_empty == Empty)
+			return True;  //move black Pawn one square forward
+		else if ((number_move_to - number_move_from) == -1 && abs(letter_move_from - letter_move_to) == 1 &&
+			Is_it_empty > 0) return True; //capture obliquely
 		else if ((number_move_to - number_move_from) == -2 && letter_move_to == letter_move_from && Is_it_empty == Empty && !Have_it_been_moved) {
 			if (!Main_funct_is_it_empty_Rook(Board, letter_move_to, number_move_to, number_move_to, letter_move_to)) return False;
-			return True;  //pierwszy ruch piona czarnego 
+			return True;  //first move of black Pawn
 		}
 		else if (number_move_to == 2 && number_move_from == 3 && last_enemy_move.number - 49 == 3 && last_enemy_move.Piece_on_square == White_Pawn && abs(letter_move_to - letter_move_from) == 1) {
 			Board[3][letter_move_to].Piece_on_square = Empty;
-			return True;  //bicie w przelocie  --- tutaj brakuje mi jeszcze ze przeciwnik ruszyl sie pionem o dwa pola do przodu 
+			return True;  //En passant 
 		}
 	}
 	return False;
@@ -130,20 +150,27 @@ Bool Pawn_move(int letter_move_to, int number_move_to, int number_move_from, int
 void Pawn_promotion(Board_struct** Board, int number_move_to, int letter_move_to, Player *turn, int *x, int *y) {
 	if (number_move_to == 0) {
 		displayChessboard(Board, turn, *x, *y, "For what do you want exchange pawn?\n");
-		char buf[2];
-		scanf("%s", buf);
-		if (buf[0] == 'q') Board[number_move_to][letter_move_to].Piece_on_square = Black_Queen;
-		else if (buf[0] == 'k') Board[number_move_to][letter_move_to].Piece_on_square = Black_Knight;
-		else if (buf[0] == 'r') Board[number_move_to][letter_move_to].Piece_on_square = Black_Rook;
-		else if (buf[0] == 'b') Board[number_move_to][letter_move_to].Piece_on_square = Black_Bishop;
-	}
+		char buf = getchar();
+		while (buf == 'q' || buf == 'r' || buf == 'k' || buf == 'b') {
+			buf = getchar();
+		}
+		//changing Pawn for different piece
+		if (buf == 'q') Board[number_move_to][letter_move_to].Piece_on_square = Black_Queen;
+		else if (buf == 'k') Board[number_move_to][letter_move_to].Piece_on_square = Black_Knight;
+		else if (buf == 'r') Board[number_move_to][letter_move_to].Piece_on_square = Black_Rook;
+		else if (buf == 'b') Board[number_move_to][letter_move_to].Piece_on_square = Black_Bishop;
+	} 
 	else if (number_move_to == 7) {
-		displayChessboard(Board, turn, *x, *y, "For what do you want exchange pawn?\n");
-		char buf[2];
-		scanf("%s", buf);
-		if (buf[0] == 'q') Board[number_move_to][letter_move_to].Piece_on_square = White_Queen;
-		else if (buf[0] == 'k') Board[number_move_to][letter_move_to].Piece_on_square = White_Knight;
-		else if (buf[0] == 'r') Board[number_move_to][letter_move_to].Piece_on_square = White_Rook;
-		else if (buf[0] == 'b') Board[number_move_to][letter_move_to].Piece_on_square = White_Bishop;
+		displayChessboard(Board, turn, *x, *y, 
+			"For what do you want exchange pawn?\n q - Queen, r - Rook, k - Knight, b -Bishop");
+		char buf = getchar();
+		while (buf == 'q' || buf == 'r' || buf == 'k' || buf == 'b') {
+			buf = getchar();
+		}
+		//changing Pawn for different piece
+		if (buf == 'q') Board[number_move_to][letter_move_to].Piece_on_square = White_Queen;
+		else if (buf == 'k') Board[number_move_to][letter_move_to].Piece_on_square = White_Knight;
+		else if (buf == 'r') Board[number_move_to][letter_move_to].Piece_on_square = White_Rook;
+		else if (buf == 'b') Board[number_move_to][letter_move_to].Piece_on_square = White_Bishop;
 	}
 }

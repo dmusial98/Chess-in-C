@@ -8,14 +8,20 @@
 #include<stdlib.h>
 
 Bool Is_it_correct_move(Board_struct** Board, Pieces Which_one, int x, int y, int oldX, int oldY,
-	Board_struct last_move, Player turn) {
-	if (abs(Which_one) == White_King) return King_move(x, y, oldY, oldX, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square);
-	else if (abs(Which_one) == White_Queen) return Queen_move(x, y, oldY, oldX, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board);
-	else if (abs(Which_one) == White_Rook) return Rook_move(x, y, oldY, oldX, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board);
-	else if (abs(Which_one) == White_Knight) return Knight_move(x, y, oldY, oldX, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square);
-	else if (abs(Which_one) == White_Bishop) return Bishop_move(x, y, oldY, oldX, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board);
-	else if (abs(Which_one) == White_Pawn) return Pawn_move(x, y, oldY, oldX, Board[y][x].Piece_on_square, Board[oldY][oldX].Piece_on_square, Board, Board[oldY][oldX].have_it_been_moved, last_move, turn);
-	return False;
+	Board_struct last_move, Player turn) { 
+	if (abs(Which_one) == White_King) return King_move(x, y, oldY, oldX, Board[y][x].Piece_on_square, 
+		Board[oldY][oldX].Piece_on_square);
+	else if (abs(Which_one) == White_Queen) return Queen_move(x, y, oldY, oldX, Board[y][x].Piece_on_square,
+		Board[oldY][oldX].Piece_on_square, Board);
+	else if (abs(Which_one) == White_Rook) return Rook_move(x, y, oldY, oldX, Board[y][x].Piece_on_square,
+		Board[oldY][oldX].Piece_on_square, Board);
+	else if (abs(Which_one) == White_Knight) return Knight_move(x, y, oldY, oldX, Board[y][x].Piece_on_square,
+		Board[oldY][oldX].Piece_on_square);
+	else if (abs(Which_one) == White_Bishop) return Bishop_move(x, y, oldY, oldX, Board[y][x].Piece_on_square,
+		Board[oldY][oldX].Piece_on_square, Board);
+	else if (abs(Which_one) == White_Pawn) return Pawn_move(x, y, oldY, oldX, Board[y][x].Piece_on_square, 
+		Board[oldY][oldX].Piece_on_square, Board, Board[oldY][oldX].have_it_been_moved, last_move, turn);
+	return False; 
 }
 
 Bool Help_for_choosing_piece(Player turn, Pieces Which_one) {
@@ -29,80 +35,88 @@ Bool Help_for_choosing_piece(Player turn, Pieces Which_one) {
 	}
 }
 
-Player playing(Player *turn, Board_struct** Board) {
+Player playing(Player *turn, Board_struct** Board, int *Which_function) {
 
-	int x = 0, y = 0;
-	int oldX, oldY;
+	int x = 0, y = 0; //variables for setting position of piece
+	int oldX, oldY;	//variables saving old position of piece
 	char* info = "Choose piece";
-	Bool possible_move = True, is_it_correct = True, black_King_threatened = False, black_King_threatened2 = False;
-	Bool white_King_threatened = False, white_King_threatened2 = False;   //various responsible for get knowing about choosen right target place for piece
-	Bool Maybe_it_is_checkmate;												  //various responsible for get knowing about choosen right colour of piece and target place
-																		  // napisze potem
-	Pieces Which_one, What_was_there;			//various required
+	Bool possible_move = True, is_it_correct = True;
+	//possible_move variable responsible for get knowing about choosen right target place for piece
+	//is_it_correct variable telling about choosing correct colour of piece
+	Bool white_King_threatened = False, white_King_threatened2 = False;
+	Bool black_King_threatened = False, black_King_threatened2 = False;
+	//variables responsible for getting know about checks (dangers of King)
+	Bool Maybe_it_is_checkmate;										
+	*Which_function = 0;													 
+	Pieces Which_one, What_was_there;			//Which_one telling about pieces which player chosen
 	Board_struct last_move = Board[0][0];
 	while (1) {
-		do {	//warunek z podlozeniem sie na szacha
-			do {		//warunek z wybraniem odpowiedniego miejsca wedlug podstawowych zasad poruszania sie
-				do {		//warunek z wybraniem dobrej figury
+		do {	
+			do {		
+				do {	
 					if (!is_it_correct || !possible_move) {
 						if (!is_it_correct) info = "Please choose correct piece";
 						else if (!possible_move) info = "You can't do that, please choose correct piece";
 						Board[oldY][oldX].is_it_chosen = False;
 					}
-					else if (black_King_threatened || white_King_threatened) {  //informacja do podlozenia sie na szacha
+					else if (black_King_threatened || white_King_threatened) {  //when King move to threatened square
 						info = "You can't move in this place, your King would be checked";
 						Board[y][x].Piece_on_square = What_was_there;
-						Board[oldY][oldX].Piece_on_square = Which_one;	//przestawianie
+						Board[oldY][oldX].Piece_on_square = Which_one;	//setup pieces on before squares
 						Board[oldY][oldX].is_it_chosen = False;
 					}
 					else info = "Choose piece";			//Chosing piece	
 					possible_move = True;			//various responsible for get knowing about choosen right target place for piece
-					arrow_control(Board, turn, &x, &y, info);
+					*Which_function = 0;
+					Board[oldY][oldX].is_it_chosen = False;
+					arrow_control(Board, turn, &x, &y, info, Which_function, &white_King_threatened, &black_King_threatened, &last_move);
 					Board[y][x].is_it_chosen = True;		//Taken a piece
 					oldX = x;
 					oldY = y;
-					Which_one = Board[y][x].Piece_on_square;
+					Which_one = Board[y][x].Piece_on_square;  
 					is_it_correct = Help_for_choosing_piece(*turn, Which_one); //checking does player choosed correct colour of piece
-				} while (!is_it_correct);
+				} while (!is_it_correct); 
 
 				info = "Choose place for your piece";
 
-				arrow_control(Board, turn, &x, &y, info);
-				possible_move = Is_it_correct_move(Board, Which_one, x, y, oldX, oldY, last_move, *turn);
-			} while (!possible_move);
+				arrow_control(Board, turn, &x, &y, info, Which_function, &white_King_threatened, &black_King_threatened, &last_move);
+				possible_move = Is_it_correct_move(Board, Which_one, x, y, oldX, oldY, last_move, *turn); 
+			} while (!possible_move); //condition with choosing correct place for piece
 
 			What_was_there = Board[y][x].Piece_on_square;
 			Board[y][x].Piece_on_square = Which_one;
 			Board[oldY][oldX].Piece_on_square = Empty;
-			Board[oldY][oldX].is_it_chosen = False;			//przestawianie
+			Board[oldY][oldX].is_it_chosen = False;			//making a move
 
 			black_King_threatened = Is_King_threatened(Board, Black_King, White_Rook);
 			white_King_threatened = Is_King_threatened(Board, White_King, Black_Rook);
+			//checking dengers for King
 
 		} while ((*turn == White && white_King_threatened == True) || (*turn == Black && black_King_threatened == True));
-		//wystawienie sie na szacha
+		//condition with making danger of King after own turn
 
 		Maybe_it_is_checkmate = support_for_condition_from_check(&black_King_threatened, &is_it_correct, &possible_move, &white_King_threatened, &oldX,
-			&oldY, &x, &y, &Which_one, &last_move, Board, info, &What_was_there, turn);
+			&oldY, &x, &y, &Which_one, &last_move, Board, info, &What_was_there, turn, Which_function, False);
 		if (Maybe_it_is_checkmate == White) return White;
 		else if (Maybe_it_is_checkmate == Black) return Black;
+		*Which_function = 0;
 
 		if (abs(Which_one) == White_Pawn)
 			Pawn_promotion(Board, y, x, turn, &x, &y);
 		white_King_threatened = Is_King_threatened(Board, White_King, Black_Rook);
 		black_King_threatened = Is_King_threatened(Board, Black_King, White_Rook);
 
-		//szachowanie po promocji piona
+		//Checking (dengers) of King after pawn promotion
 
-		Maybe_it_is_checkmate = support_for_condition_from_check(&black_King_threatened, &is_it_correct, &possible_move, &white_King_threatened, &oldX,
-			&oldY, &x, &y, &Which_one, &last_move, Board, info, &What_was_there, turn);
+		Maybe_it_is_checkmate = support_for_condition_from_check(&black_King_threatened, &is_it_correct,
+		&possible_move, &white_King_threatened, &oldX, &oldY, &x, &y, &Which_one, &last_move, Board, info,
+			&What_was_there, turn, Which_function, False);
 		if (Maybe_it_is_checkmate == White) return White;
 		else if (Maybe_it_is_checkmate == Black) return Black;
-		//tutaj condition
+		*Which_function = 0;
 
 		if (*turn == White) *turn = Black;
 		else *turn = White;
-		last_move = Board[y][x];
-
+		last_move = Board[y][x]; 
 	}
 }

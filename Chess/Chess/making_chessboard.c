@@ -3,7 +3,7 @@
 
 #include<stdlib.h>
 
-Board_struct** Fill_Board(Board_struct** Board) { //wypelnianie szachownicy pionkami dla wartosci poczatkowych
+Board_struct** Fill_Board(Board_struct** Board) { //filing chessboard pieces for starting values
 	Board[0][0].Piece_on_square = White_Rook; Board[0][7].Piece_on_square = White_Rook;
 	Board[0][1].Piece_on_square = White_Knight; Board[0][6].Piece_on_square = White_Knight;
 	Board[0][2].Piece_on_square = White_Bishop; Board[0][5].Piece_on_square = White_Bishop;
@@ -27,7 +27,7 @@ Board_struct** Fill_Board(Board_struct** Board) { //wypelnianie szachownicy pion
 	return Board;
 }
 
-Board_struct** Make_Board() {		//tworzenie szachownicy w strukturze dynamicznej
+Board_struct** Make_Board() {		//making chessboard in dynamic structure
 	Board_struct ** Board = calloc(8, sizeof(Pieces*));
 	for (int i = 0; i < 8; i++) Board[i] = calloc(8, sizeof(Board_struct));
 
@@ -44,6 +44,5 @@ Board_struct** Make_Board() {		//tworzenie szachownicy w strukturze dynamicznej
 			Board[j][i].is_it_chosen = False;
 		} filling_letter++;
 	}
-	Board = Fill_Board(Board); //wypelnienie tablicy 
 	return Board;
 }
