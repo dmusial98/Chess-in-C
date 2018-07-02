@@ -71,9 +71,6 @@
     <ClInclude Include="structures_and_enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="file_support.h">
       <Filter>Header Files</Filter>
     </ClInclude>

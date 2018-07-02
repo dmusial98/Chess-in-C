@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include<windows.h>
 #include<time.h>
+#include<string.h>
 
 void timer(int sekundy) {		//function waiting writing time in seconds
 	int czas = 1000 * sekundy;
@@ -20,12 +21,15 @@ void timer(int sekundy) {		//function waiting writing time in seconds
 	while (clock() < poczatek + czas);
 }
 
-int main() {
-	printf("Hello in chess game, what do you want to do?\n 0 -> start new game\t1-> play from excisting file\n");
-	char choose = getchar();
-	while (choose < '0' || choose > '1') {
-		choose = getchar();
+void choose_game(char *choose) {
+	while (*choose < '0' || *choose > '1') {
+		system("cls");
+		printf("Please write correct number\n0 -> start new game\t1-> play from excisting file\n");
+		*choose = getchar();
 	}
+}
+
+void switch_game(char choose) {
 	Player turn;
 	int Which_function;
 	switch (choose) {
@@ -36,7 +40,7 @@ int main() {
 		Player who_won = playing(&turn, Board, &Which_function);
 		if (who_won == White) displayChessboard(Board, &turn, 0, 0, "White pieces won\n\n");
 		else displayChessboard(Board, &turn, 0, 0, "Black pieces won\n\n");
-		break; 
+		break;
 	}
 	case '1': {
 		Board_struct **Board = Make_Board();
@@ -54,29 +58,38 @@ int main() {
 		else printf("\nSomething went wrong");
 		if (Which_function == 0)
 		{
-			Player who_won = playing(&turn, Board, &Which_function); 
+			Player who_won = playing(&turn, Board, &Which_function);
 			//resuming the game from state without check(danger of King)
 		}
-		else {// resuming the game in check state
+		else if (Which_function == 1) {// resuming the game in check state
 			support_for_condition_from_check(&black_King_threatened, &is_it_correct, &possible_move,
 				&white_King_threatened, &oldX, &oldY, &x, &y, &Which_one, &last_move, Board, info,
 				&What_was_there, &turn, &Which_function, True);
 			if (turn == White) turn = Black;
 			else turn = White;
-			Player who_won = playing(&turn, Board, &Which_function);	
+			Player who_won = playing(&turn, Board, &Which_function);
 			//playing after obviating check (danger of King)
-			
+
 			if (who_won == White) displayChessboard(Board, &turn, 0, 0, "White pieces won\n\n");
 			else displayChessboard(Board, &turn, 0, 0, "Black pieces won\n\n");
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < BOARD_SIZE; i++) {
 				free(Board[i]);
 			}
 			free(Board);
 			break;
 		}
+		printf(", please open game anew");
+	}
 	}
 }
-	
+
+int main(int argc, char* argv[]) {
+
+	printf("Hello in chess game, what do you want to do?\n 0 -> start new game\t1-> play from excisting file\n");
+	char choose = getchar();
+	choose_game(&choose);
+	switch_game(choose);
+
 	timer(200);
 	return 0;
 }

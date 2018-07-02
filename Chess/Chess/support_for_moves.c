@@ -1,4 +1,5 @@
 #include"structures_and_enums.h"
+#include"definitions.h"
 #include"support_for_moves.h"
 
 #include<stdlib.h>
@@ -14,21 +15,19 @@ Bool first_condition_for_move(Pieces Is_it_empty, Pieces colour) {
 	return True;
 }
 
-int *diffrences_for_move(int *array_with_info_about_diffrences_for_move, int letter_move_to, int number_move_to,
-	int number_move_from, int letter_move_from) {
-	array_with_info_about_diffrences_for_move[0] = letter_move_to - letter_move_from; //sign of difference horizontally
-	array_with_info_about_diffrences_for_move[1] = number_move_to - number_move_from; //sign_of_difference_upright
-	array_with_info_about_diffrences_for_move[2] = abs(letter_move_to - letter_move_from); //difference horizontally
-	array_with_info_about_diffrences_for_move[3] = abs(number_move_to - number_move_from);  //difference upright
-	return array_with_info_about_diffrences_for_move;
+void differences_for_move(int array_diff[4], int letter_move_to, int number_move_to, int number_move_from,
+	int letter_move_from) {
+	array_diff[0] = letter_move_to - letter_move_from; //sign of difference horizontally
+	array_diff[1] = number_move_to - number_move_from; //sign_of_difference_upright
+	array_diff[2] = abs(letter_move_to - letter_move_from); //difference horizontally
+	array_diff[3] = abs(number_move_to - number_move_from);  //difference upright
 }
 
-Bool Check_is_it_empty_between_squares_Rook(int orientation, int difference, int sign_of_difference,
+Bool Check_is_it_empty_between_squares_Rook(Orientation orient, int difference, int sign_of_difference,
 	int number_move_from, int letter_move_from, Board_struct** Board) {
 	if (difference) {
 		difference--;
-		switch (orientation) {
-			//orientation 0 -> horizontally, 1 -> upright
+		switch (orient) {
 		case 0:
 			for (int i = 1; i <= difference; i++) {
 				if (sign_of_difference > 0) {
@@ -74,43 +73,33 @@ Bool Check_is_it_empty_between_squares_Bishop(int difference_horizontally, int s
 }
 
 Bool Main_funct_is_it_empty_Rook(Board_struct** Board, int letter_move_to, int number_move_to, int number_move_from,
-	int letter_move_from) { // returning true if all squares between starting and target square -> Rook's move type
-	int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
+	int letter_move_from) { 
+	// returning true if all squares between starting and target square are empty-> Rook's move type
+	int array_diff[4];
 	//sign of difference horizontally -> 0
 	//sign_of_difference_upright      -> 1
 	//difference horizontally         -> 2
 	//difference upright              -> 3
-	array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move,
-		letter_move_to, number_move_to, number_move_from, letter_move_from);
-	if (!Check_is_it_empty_between_squares_Rook(0, array_with_info_about_diffrences_for_move[2],
-		array_with_info_about_diffrences_for_move[0], number_move_from, letter_move_from, Board))
-	{
-		free(array_with_info_about_diffrences_for_move);
-		return False;
-	}
-	if (!Check_is_it_empty_between_squares_Rook(1, array_with_info_about_diffrences_for_move[3],
-		array_with_info_about_diffrences_for_move[1], number_move_from, letter_move_from, Board))
-	{
-		free(array_with_info_about_diffrences_for_move);
-		return False;
-	}
-	free(array_with_info_about_diffrences_for_move);
+	differences_for_move(array_diff, letter_move_to, number_move_to, number_move_from, letter_move_from);
+	if (!Check_is_it_empty_between_squares_Rook(Horizontally, array_diff[2], array_diff[0], number_move_from,
+		letter_move_from, Board)) return False;
+	if (!Check_is_it_empty_between_squares_Rook(Upright, array_diff[3], array_diff[1], number_move_from,
+		letter_move_from, Board)) return False;
+
 	return True;
 }
 
 Bool Main_funct_is_it_empty_Bishop(int letter_move_to, int number_move_to, int number_move_from, int letter_move_from,
 	Board_struct** Board) { // returning true if all squares between starting and target square -> Bishop's move type
-	int *array_with_info_about_diffrences_for_move = calloc(4, sizeof(int));
+	int array_diff[4];
 	//sign of difference horizontally -> 0
 	//sign_of_difference_upright      -> 1
 	//difference horizontally         -> 2
 	//difference upright              -> 3
-	array_with_info_about_diffrences_for_move = diffrences_for_move(array_with_info_about_diffrences_for_move, letter_move_to, number_move_to, number_move_from, letter_move_from);
-	if (!Check_is_it_empty_between_squares_Bishop(array_with_info_about_diffrences_for_move[2], array_with_info_about_diffrences_for_move[0], array_with_info_about_diffrences_for_move[1], (int)number_move_from, (int)letter_move_from, Board))
-	{
-		free(array_with_info_about_diffrences_for_move);
-		return False;
-	}
+	differences_for_move(array_diff, letter_move_to, number_move_to, number_move_from, letter_move_from);
+	if (!Check_is_it_empty_between_squares_Bishop(array_diff[2], array_diff[0], array_diff[1], (int)number_move_from,
+		(int)letter_move_from, Board)) return False;
+
 	return True;
 }
 

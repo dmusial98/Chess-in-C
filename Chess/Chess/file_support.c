@@ -1,4 +1,5 @@
 #include"structures_and_enums.h"
+#include"definitions.h"
 #include"file_support.h"
 #include<stdio.h>
 
@@ -10,8 +11,8 @@ Bool *white_King_threatened, Bool *black_King_threatened, Board_struct *last_mov
 		info = "I can't open the file";
 		return False; }
 
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
+	for (int i = 0; i < BOARD_SIZE; i++) {
+		for (int j = 0; j < BOARD_SIZE; j++) {
 			fwrite(&Board[i][j].Piece_on_square, sizeof(Pieces), 1, file_pointer);
 			fwrite(&Board[i][j].number, sizeof(char), 1, file_pointer);
 			fwrite(&Board[i][j].letter, sizeof(char), 1, file_pointer);
@@ -41,8 +42,8 @@ Bool read_from_file(char* name_of_file, char* info, Board_struct **Board, Player
 		return False;
 	}
 
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
+	for (int i = 0; i < BOARD_SIZE; i++) {
+		for (int j = 0; j < BOARD_SIZE; j++) {
 			fread(&Board[i][j].Piece_on_square, sizeof(Pieces), 1, file_pointer);
 			fread(&Board[i][j].number, sizeof(char), 1, file_pointer);
 			fread(&Board[i][j].letter, sizeof(char), 1, file_pointer);

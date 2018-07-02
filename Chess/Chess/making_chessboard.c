@@ -1,4 +1,5 @@
 #include"structures_and_enums.h"
+#include"definitions.h"
 #include"making_chessboard.h"
 
 #include<stdlib.h>

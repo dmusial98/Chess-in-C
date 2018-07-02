@@ -1,4 +1,5 @@
 #include"structures_and_enums.h"
+#include"definitions.h"
 #include"moves.h"
 #include"support_checkmate.h"
 #include"control_and_display.h"
@@ -10,6 +11,25 @@
 int negate(int argument) {
 	argument = argument - argument - argument;
 	return argument;
+}
+
+Bool is_it_checkmate_after_move(Board_struct **Board, Pieces *makeshift_piece, Pieces colour_of_King, 
+	Pieces colour_of_piece, int a, int b, int i, int j) {
+	//move on this place is possible
+	*makeshift_piece = Board[a][b].Piece_on_square;
+	Board[i][j].Piece_on_square = Empty;
+	Board[a][b].Piece_on_square = colour_of_piece;	//setup piece on possible move
+
+	if (!Is_King_threatened(Board, colour_of_King, negate(colour_of_piece))) {
+		//checking is it chekmate (end of game)
+
+		Board[i][j].Piece_on_square = colour_of_piece;		//when it isn't checkmate
+		Board[a][b].Piece_on_square = *makeshift_piece;		//setup piece on old square
+		return False;
+	}
+	Board[i][j].Piece_on_square = colour_of_piece;			//we have check for this piece
+	Board[a][b].Piece_on_square = *makeshift_piece;			//setup piece on old square
+	return True;
 }
 
 Bool Is_it_chekmate_for_one_piece(Board_struct** Board, Pieces colour_of_piece, Pieces colour_of_King, 
@@ -30,20 +50,8 @@ Bool Is_it_chekmate_for_one_piece(Board_struct** Board, Pieces colour_of_piece, 
 					for (int b = 0; b < 8; b++) {
 						if ((*func_pointer)(b, a, i, j, Board[a][b].Piece_on_square, Board[i][j].Piece_on_square,
 							Board, Board[i][j].have_it_been_moved, last_enemy_move, turn)) {
-							//move on this place is possible
-							makeshift_piece = Board[a][b].Piece_on_square;
-							Board[i][j].Piece_on_square = Empty;
-							Board[a][b].Piece_on_square = colour_of_piece;	//setup piece on possible move
-
-							if (!Is_King_threatened(Board, colour_of_King, negate(colour_of_piece))) {		
-								//checking is it chekmate (end of game)
-
-								Board[i][j].Piece_on_square = colour_of_piece;		//when it isn't checkmate
-								Board[a][b].Piece_on_square = makeshift_piece;		//setup piece on old square
-								return False;
-							}
-							Board[i][j].Piece_on_square = colour_of_piece;			//we have check for this piece
-							Board[a][b].Piece_on_square = makeshift_piece;			//setup piece on old square
+							if (!is_it_checkmate_after_move(Board, &makeshift_piece, colour_of_King, colour_of_piece,
+							a, b, i, j)) return False; //move on this place is possible
 						}
 					}
 				}

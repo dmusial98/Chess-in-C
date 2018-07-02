@@ -130,7 +130,6 @@
     <ClInclude Include="file_support.h" />
     <ClInclude Include="making_chessboard.h" />
     <ClInclude Include="moves.h" />
-    <ClInclude Include="player.h" />
     <ClInclude Include="play_support.h" />
     <ClInclude Include="structures_and_enums.h" />
     <ClInclude Include="support_checkmate.h" />

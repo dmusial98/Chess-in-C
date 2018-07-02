@@ -9,5 +9,13 @@
 #define DOWN_BORDER 0
 #define LEFT_BORDER 0
 #define RIGHT_BORDER 7
+#define LETTER 65
+#define BOARD_SIZE 8
+#define CURRENT_EMPTY_SQUARE 176
+#define LEFT_TOP_EDGE 195
+#define TOP_EDGE 196
+#define RIGHT_TOP_EDGE 180
+#define LEFT_EDGE 124
+#define RIGHT_EDGE 124
 
 #endif
