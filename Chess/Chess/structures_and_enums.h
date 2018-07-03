@@ -12,11 +12,6 @@ typedef enum {
 //type for all availiable pieces and their shortage
 
 typedef struct {
-	char number;
-	char letter;
-} Coordinates;
-
-typedef struct {
 	Pieces Piece_on_square;
 	char number;
 	char letter;

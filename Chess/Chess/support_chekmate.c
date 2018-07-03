@@ -165,19 +165,21 @@ Player checks_support(Bool *is_it_correct, Bool *possible_move, Bool *black_King
 	return Nobody;
 }
 
-Player support_for_condition_from_check(Bool *black_King_threatened, Bool *is_it_correct, Bool *possible_move, Bool *white_King_threatened,
-	int *oldX, int *oldY, int *x, int *y, Pieces *Which_one, Board_struct *last_move, Board_struct** Board, char* info, Pieces *What_was_there,
-	Player *turn, int *Which_function, Bool start_from_file) {
+Player support_for_condition_from_check(Bool *black_King_threatened, Bool *is_it_correct, Bool *possible_move,
+	Bool *white_King_threatened, int *oldX, int *oldY, int *x, int *y, Pieces *Which_one, Board_struct *last_move,
+	Board_struct** Board, char* info, Pieces *What_was_there, Player *turn, int *Which_function,Bool start_from_file){
 
 	if (*black_King_threatened) { //black King is checked
-		Player Maybe_it_is_chekmate = checks_support(is_it_correct, possible_move, black_King_threatened, white_King_threatened, oldX, oldY, x, y, Which_one, last_move,
+		Player Maybe_it_is_chekmate = checks_support(is_it_correct, possible_move, black_King_threatened,
+			white_King_threatened, oldX, oldY, x, y, Which_one, last_move,
 			Board, info, What_was_there, turn, Black_King, Which_function, start_from_file);
 		if (Maybe_it_is_chekmate == White) return White;
 		else if (Maybe_it_is_chekmate == Black) return Black;
 	} // returning colour of winner of the game
 
 	else if (*white_King_threatened) { //white King i checked
-		Player Maybe_it_is_chekmate = checks_support(is_it_correct, possible_move, black_King_threatened, white_King_threatened, oldX, oldY, x, y, Which_one, last_move,
+		Player Maybe_it_is_chekmate = checks_support(is_it_correct, possible_move, black_King_threatened,
+			white_King_threatened, oldX, oldY, x, y, Which_one, last_move,
 			Board, info, What_was_there, turn, White_King, Which_function, start_from_file);
 		if ( Maybe_it_is_chekmate == White) return White;
 		else if(Maybe_it_is_chekmate == Black) return Black;

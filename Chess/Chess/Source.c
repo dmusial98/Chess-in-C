@@ -85,7 +85,7 @@ void switch_game(char choose) {
 
 int main(int argc, char* argv[]) {
 
-	printf("Hello in chess game, what do you want to do?\n 0 -> start new game\t1-> play from excisting file\n");
+	printf("Hello in chess game, what do you want to do?\n 0 -> start new game\t1-> play from existing file\n");
 	char choose = getchar();
 	choose_game(&choose);
 	switch_game(choose);

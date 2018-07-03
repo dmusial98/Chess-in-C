@@ -54,6 +54,7 @@ void return_from_conditions(Board_struct **Board, Bool *is_it_correct, Bool *pos
 	else *info = "Choose piece";			//Chosing piece	
 }
 
+//checking is this move correct
 void correct_piece_condition(Board_struct **Board, Bool *possible_move, Bool *is_it_correct, Player *turn, int *x,
 	int *y,int *oldX, int *oldY, Bool *white_King_threatened, Bool *black_King_threatened, int *Which_function, 
 	char *info, Pieces *Which_one, Board_struct *last_move) {
@@ -80,8 +81,9 @@ void checking_condition(Board_struct **Board, Pieces *What_was_there, Pieces *Wh
 }
 
 Player checkmate_after_move(Board_struct **Board, Bool *possible_move, Bool *is_it_correct, Bool *black_King_threatened,
-	Bool *white_King_threatened, Bool *Maybe_it_is_checkmate, int *x, int *y, int *oldX, int *oldY, int *Which_function, Pieces *Which_one, Pieces *What_was_there,
-	Board_struct *last_move, char *info, Player *turn) {
+	Bool *white_King_threatened, Bool *Maybe_it_is_checkmate, int *x, int *y, int *oldX, int *oldY, int *Which_function,
+	Pieces *Which_one, Pieces *What_was_there, Board_struct *last_move, char *info, Player *turn) {
+
 	*Maybe_it_is_checkmate = support_for_condition_from_check(black_King_threatened, is_it_correct,
 		possible_move, white_King_threatened, oldX, oldY, x, y, Which_one, last_move, Board, info,
 		What_was_there, turn, Which_function, False);

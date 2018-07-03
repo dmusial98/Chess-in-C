@@ -125,7 +125,7 @@ void Pawn_promotion(Board_struct** Board, int number_move_to, int letter_move_to
 	if (number_move_to == 0) {
 		displayChessboard(Board, turn, *x, *y, "For what do you want exchange pawn?\n");
 		char buf = getchar();
-		while (buf == 'q' || buf == 'r' || buf == 'k' || buf == 'b') {
+		while (buf != 'q' && buf != 'r' && buf != 'k' && buf != 'b') {
 			buf = getchar();
 		}
 		//changing Pawn for different piece
@@ -138,7 +138,7 @@ void Pawn_promotion(Board_struct** Board, int number_move_to, int letter_move_to
 		displayChessboard(Board, turn, *x, *y, 
 			"For what do you want exchange pawn?\n q - Queen, r - Rook, k - Knight, b -Bishop");
 		char buf = getchar();
-		while (buf == 'q' || buf == 'r' || buf == 'k' || buf == 'b') {
+		while (buf != 'q' && buf != 'r' && buf != 'k' && buf != 'b') {
 			buf = getchar();
 		}
 		//changing Pawn for different piece

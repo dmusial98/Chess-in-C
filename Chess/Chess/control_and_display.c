@@ -22,6 +22,8 @@ void display_Piece(Board_struct** Board, int i, int j) {
 		printf("KN");
 	else if (abs(Board[i][j].Piece_on_square) == White_Pawn)
 		printf(" P");
+	else if (Board[i][j].Piece_on_square == Empty)
+		printf("  ");
 	setColor(WHITE);
 }
 
