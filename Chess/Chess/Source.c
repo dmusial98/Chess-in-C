@@ -40,6 +40,10 @@ void switch_game(char choose) {
 		Player who_won = playing(&turn, Board, &Which_function);
 		if (who_won == White) displayChessboard(Board, &turn, 0, 0, "White pieces won\n\n");
 		else displayChessboard(Board, &turn, 0, 0, "Black pieces won\n\n");
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			free(Board[i]);
+		}
+		free(Board);
 		break;
 	}
 	case '1': {
